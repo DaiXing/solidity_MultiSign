@@ -1,0 +1,309 @@
+No files changed, compilation skipped
+
+Ran 3 tests for test/MultiSign.t.sol:MultiSignTest
+[PASS] test_confirm() (gas: 208929)
+Logs:
+  user1 确认后。 确认数量= 1
+  userCreator 确认后。 确认数量= 2
+  user1 确认后。 确认数量= 2
+  userCreator 取消后。 确认数量= 1
+  数量不够，执行1次 = count invalid
+  user2 确认后。 确认数量= 2
+  数量够了，执行1次 = OK
+  执行前的余额 =  500
+  执行后的余额 =  400
+  To的余额 =  100
+
+Traces:
+  [2568873] MultiSignTest::setUp()
+    ├─ [0] VM::prank(0x0000000000000000000000000000000000003000)
+    │   └─ ← [Return]
+    ├─ [2321057] → new MultiSignContract@0x0DfDc493718683aCfd27b9A82C28171ffc6EEb26
+    │   ├─ emit OwnerAdded(user: 0x0000000000000000000000000000000000003000)
+    │   ├─ emit OwnerAdded(user: 0x0000000000000000000000000000000000003001)
+    │   ├─ emit OwnerAdded(user: 0x0000000000000000000000000000000000003002)
+    │   └─ ← [Return] 10323 bytes of code
+    ├─ [0] VM::deal(0x0000000000000000000000000000000000003001, 1000)
+    │   └─ ← [Return]
+    ├─ [0] VM::prank(0x0000000000000000000000000000000000003001)
+    │   └─ ← [Return]
+    ├─ [1647] MultiSignContract::receive{value: 500}()
+    │   ├─ emit RecvMoney(from: 0x0000000000000000000000000000000000003001, amount: 500)
+    │   └─ ← [Stop]
+    ├─ [0] VM::prank(0x0000000000000000000000000000000000003000)
+    │   └─ ← [Return]
+    ├─ [120126] MultiSignContract::createTx("buy orange", 0x0000000000000000000000000000000000003099, 100)
+    │   ├─ emit TxCreated(creator: 0x0000000000000000000000000000000000003000, txId: 1, title: "buy orange", to: 0x0000000000000000000000000000000000003099, goal: 100)
+    │   └─ ← [Return] 1
+    └─ ← [Stop]
+
+  [228829] MultiSignTest::test_confirm()
+    ├─ [0] VM::prank(0x0000000000000000000000000000000000003001)
+    │   └─ ← [Return]
+    ├─ [53850] MultiSignContract::confirmOnce(1)
+    │   ├─ emit TxConfirmOnce(txId: 1, user: 0x0000000000000000000000000000000000003001)
+    │   ├─  storage changes:
+    │   │   @ 0xfce790c03f769439cca5f06fab0803af3ec0084899c099d62a6dc72fa958f54f: 0 → 1
+    │   │   @ 0xcc69885fda6bcc1a4ace058b4a62bf5e179ea78fd58a1ccd71c22cc9b6887935: 0 → 1
+    │   └─ ← [Return] 1
+    ├─ [0] console::log("user1 确认后。 确认数量=", 1) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] VM::prank(0x0000000000000000000000000000000000003000)
+    │   └─ ← [Return]
+    ├─ [27950] MultiSignContract::confirmOnce(1)
+    │   ├─ emit TxConfirmOnce(txId: 1, user: 0x0000000000000000000000000000000000003000)
+    │   ├─  storage changes:
+    │   │   @ 0xcc69885fda6bcc1a4ace058b4a62bf5e179ea78fd58a1ccd71c22cc9b6887935: 1 → 2
+    │   │   @ 0x6e31885ef1f948aff319b68c7ef696a32f60b885bb8460af69841bf70eb9a4a8: 0 → 1
+    │   └─ ← [Return] 2
+    ├─ [0] console::log("userCreator 确认后。 确认数量=", 2) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] VM::prank(0x0000000000000000000000000000000000003001)
+    │   └─ ← [Return]
+    ├─ [1793] MultiSignContract::confirmOnce(1)
+    │   └─ ← [Return] 2
+    ├─ [0] console::log("user1 确认后。 确认数量=", 2) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] VM::prank(0x0000000000000000000000000000000000003000)
+    │   └─ ← [Return]
+    ├─ [4039] MultiSignContract::confirmRevoke(1)
+    │   ├─ emit TxConfirmRevoked(txId: 1, user: 0x0000000000000000000000000000000000003000)
+    │   ├─  storage changes:
+    │   │   @ 0xcc69885fda6bcc1a4ace058b4a62bf5e179ea78fd58a1ccd71c22cc9b6887935: 2 → 1
+    │   │   @ 0x6e31885ef1f948aff319b68c7ef696a32f60b885bb8460af69841bf70eb9a4a8: 1 → 0
+    │   └─ ← [Return] 1
+    ├─ [0] console::log("userCreator 取消后。 确认数量=", 1) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] VM::prank(0x0000000000000000000000000000000000003001)
+    │   └─ ← [Return]
+    ├─ [4127] MultiSignContract::executeTx(1)
+    │   └─ ← [Return] false, "count invalid"
+    ├─ [0] console::log("数量不够，执行1次 =", "count invalid") [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] VM::prank(0x0000000000000000000000000000000000003002)
+    │   └─ ← [Return]
+    ├─ [27950] MultiSignContract::confirmOnce(1)
+    │   ├─ emit TxConfirmOnce(txId: 1, user: 0x0000000000000000000000000000000000003002)
+    │   ├─  storage changes:
+    │   │   @ 0x1722b9fc529613ae3b367d566b241b4a855899933c79a05f0b0e0b0124ac8acf: 0 → 1
+    │   │   @ 0xcc69885fda6bcc1a4ace058b4a62bf5e179ea78fd58a1ccd71c22cc9b6887935: 1 → 2
+    │   └─ ← [Return] 2
+    ├─ [0] console::log("user2 确认后。 确认数量=", 2) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] VM::prank(0x0000000000000000000000000000000000003001)
+    │   └─ ← [Return]
+    ├─ [63866] MultiSignContract::executeTx(1)
+    │   ├─ [0] 0x0000000000000000000000000000000000003099::fallback{value: 100}()
+    │   │   └─ ← [Stop]
+    │   ├─ emit TxExecuted(txId: 1, user: 0x0000000000000000000000000000000000003001, to: 0x0000000000000000000000000000000000003099, goal: 100)
+    │   ├─  storage changes:
+    │   │   @ 0xcc69885fda6bcc1a4ace058b4a62bf5e179ea78fd58a1ccd71c22cc9b6887936: 0 → 1
+    │   └─ ← [Return] true, "OK"
+    ├─ [0] console::log("数量够了，执行1次 =", "OK") [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] console::log("执行前的余额 = ", 500) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] console::log("执行后的余额 = ", 400) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] console::log("To的余额 = ", 100) [staticcall]
+    │   └─ ← [Stop]
+    └─ ← [Stop]
+
+[PASS] test_create() (gas: 293905)
+Logs:
+  创建 A =  1
+  创建 B =  2
+  创建 C =  3
+  查询 ： 
+     txId_ =  3
+     creator =  0x0000000000000000000000000000000000003000
+     to =  0x0000000000000000000000000000000000003099
+     goal =  100
+     title =  buy book
+     ownerCount =  3
+     needConfirm =  2
+     state =  0
+
+Traces:
+  [2568873] MultiSignTest::setUp()
+    ├─ [0] VM::prank(0x0000000000000000000000000000000000003000)
+    │   └─ ← [Return]
+    ├─ [2321057] → new MultiSignContract@0x0DfDc493718683aCfd27b9A82C28171ffc6EEb26
+    │   ├─ emit OwnerAdded(user: 0x0000000000000000000000000000000000003000)
+    │   ├─ emit OwnerAdded(user: 0x0000000000000000000000000000000000003001)
+    │   ├─ emit OwnerAdded(user: 0x0000000000000000000000000000000000003002)
+    │   └─ ← [Return] 10323 bytes of code
+    ├─ [0] VM::deal(0x0000000000000000000000000000000000003001, 1000)
+    │   └─ ← [Return]
+    ├─ [0] VM::prank(0x0000000000000000000000000000000000003001)
+    │   └─ ← [Return]
+    ├─ [1647] MultiSignContract::receive{value: 500}()
+    │   ├─ emit RecvMoney(from: 0x0000000000000000000000000000000000003001, amount: 500)
+    │   └─ ← [Stop]
+    ├─ [0] VM::prank(0x0000000000000000000000000000000000003000)
+    │   └─ ← [Return]
+    ├─ [120126] MultiSignContract::createTx("buy orange", 0x0000000000000000000000000000000000003099, 100)
+    │   ├─ emit TxCreated(creator: 0x0000000000000000000000000000000000003000, txId: 1, title: "buy orange", to: 0x0000000000000000000000000000000000003099, goal: 100)
+    │   └─ ← [Return] 1
+    └─ ← [Stop]
+
+  [293905] MultiSignTest::test_create()
+    ├─ [0] VM::startPrank(0x0000000000000000000000000000000000003000)
+    │   └─ ← [Return]
+    ├─ [0] VM::stopPrank()
+    │   └─ ← [Return]
+    ├─ [0] VM::prank(0x0000000000000000000000000000000000003000)
+    │   └─ ← [Return]
+    ├─ [128926] MultiSignContract::createTx("buy fish", 0x0000000000000000000000000000000000003099, 100)
+    │   ├─ emit TxCreated(creator: 0x0000000000000000000000000000000000003000, txId: 2, title: "buy fish", to: 0x0000000000000000000000000000000000003099, goal: 100)
+    │   ├─  storage changes:
+    │   │   @ 0xd9d16d34ffb15ba3a3d852f0d403e2ce1d691fb54de27ac87cd2f993f3ec3311: 0 → 0x6275792066697368000000000000000000000000000000000000000000000010
+    │   │   @ 0xd9d16d34ffb15ba3a3d852f0d403e2ce1d691fb54de27ac87cd2f993f3ec3310: 0 → 12288
+    │   │   @ 0xd9d16d34ffb15ba3a3d852f0d403e2ce1d691fb54de27ac87cd2f993f3ec3312: 0 → 12441
+    │   │   @ 0xd9d16d34ffb15ba3a3d852f0d403e2ce1d691fb54de27ac87cd2f993f3ec330f: 0 → 2
+    │   │   @ 0xd9d16d34ffb15ba3a3d852f0d403e2ce1d691fb54de27ac87cd2f993f3ec3313: 0 → 100
+    │   │   @ 0: 2 → 3
+    │   └─ ← [Return] 2
+    ├─ [0] VM::prank(0x0000000000000000000000000000000000003000)
+    │   └─ ← [Return]
+    ├─ [120126] MultiSignContract::createTx("buy book", 0x0000000000000000000000000000000000003099, 100)
+    │   ├─ emit TxCreated(creator: 0x0000000000000000000000000000000000003000, txId: 3, title: "buy book", to: 0x0000000000000000000000000000000000003099, goal: 100)
+    │   ├─  storage changes:
+    │   │   @ 0x7dfe757ecd65cbd7922a9c0161e935dd7fdbcc0e999689c7d31633896b1fc60b: 0 → 3
+    │   │   @ 0x7dfe757ecd65cbd7922a9c0161e935dd7fdbcc0e999689c7d31633896b1fc60e: 0 → 12441
+    │   │   @ 0x7dfe757ecd65cbd7922a9c0161e935dd7fdbcc0e999689c7d31633896b1fc60c: 0 → 12288
+    │   │   @ 0: 3 → 4
+    │   │   @ 0x7dfe757ecd65cbd7922a9c0161e935dd7fdbcc0e999689c7d31633896b1fc60d: 0 → 0x62757920626f6f6b000000000000000000000000000000000000000000000010
+    │   │   @ 0x7dfe757ecd65cbd7922a9c0161e935dd7fdbcc0e999689c7d31633896b1fc60f: 0 → 100
+    │   └─ ← [Return] 3
+    ├─ [0] console::log("创建 A = ", 1) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] console::log("创建 B = ", 2) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] console::log("创建 C = ", 3) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] VM::prank(0x0000000000000000000000000000000000003000)
+    │   └─ ← [Return]
+    ├─ [5832] MultiSignContract::queryTx(3) [staticcall]
+    │   └─ ← [Return] 3, 0x0000000000000000000000000000000000003000, 0x0000000000000000000000000000000000003099, 100, "buy book", 3, 2, 0
+    ├─ [0] console::log("查询 ： ") [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] console::log("   txId_ = ", 3) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] console::log("   creator = ", 0x0000000000000000000000000000000000003000) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] console::log("   to = ", 0x0000000000000000000000000000000000003099) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] console::log("   goal = ", 100) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] console::log("   title = ", "buy book") [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] console::log("   ownerCount = ", 3) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] console::log("   needConfirm = ", 2) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] console::log("   state = ", 0) [staticcall]
+    │   └─ ← [Stop]
+    └─ ← [Stop]
+
+[PASS] test_owner() (gas: 119294)
+Logs:
+  修改owner前，owner数量 =  3
+    owner =  0x0000000000000000000000000000000000003000
+    owner =  0x0000000000000000000000000000000000003001
+    owner =  0x0000000000000000000000000000000000003002
+  put user1 =  owner already in , no op
+  增加 user1 ，ownerCount1 =  3
+  put user5 =  put owner OK
+  增加 user5 ，ownerCount2 =  4
+  移除 user2 ，ownerCount3 =  3
+  修改owner后，owner数量 =  3
+    owner =  0x0000000000000000000000000000000000003000
+    owner =  0x0000000000000000000000000000000000003001
+    owner =  0x0000000000000000000000000000000000003005
+
+Traces:
+  [2568873] MultiSignTest::setUp()
+    ├─ [0] VM::prank(0x0000000000000000000000000000000000003000)
+    │   └─ ← [Return]
+    ├─ [2321057] → new MultiSignContract@0x0DfDc493718683aCfd27b9A82C28171ffc6EEb26
+    │   ├─ emit OwnerAdded(user: 0x0000000000000000000000000000000000003000)
+    │   ├─ emit OwnerAdded(user: 0x0000000000000000000000000000000000003001)
+    │   ├─ emit OwnerAdded(user: 0x0000000000000000000000000000000000003002)
+    │   └─ ← [Return] 10323 bytes of code
+    ├─ [0] VM::deal(0x0000000000000000000000000000000000003001, 1000)
+    │   └─ ← [Return]
+    ├─ [0] VM::prank(0x0000000000000000000000000000000000003001)
+    │   └─ ← [Return]
+    ├─ [1647] MultiSignContract::receive{value: 500}()
+    │   ├─ emit RecvMoney(from: 0x0000000000000000000000000000000000003001, amount: 500)
+    │   └─ ← [Stop]
+    ├─ [0] VM::prank(0x0000000000000000000000000000000000003000)
+    │   └─ ← [Return]
+    ├─ [120126] MultiSignContract::createTx("buy orange", 0x0000000000000000000000000000000000003099, 100)
+    │   ├─ emit TxCreated(creator: 0x0000000000000000000000000000000000003000, txId: 1, title: "buy orange", to: 0x0000000000000000000000000000000000003099, goal: 100)
+    │   └─ ← [Return] 1
+    └─ ← [Stop]
+
+  [151594] MultiSignTest::test_owner()
+    ├─ [10499] MultiSignContract::queryOwnerList()
+    │   └─ ← [Return] [0x0000000000000000000000000000000000003000, 0x0000000000000000000000000000000000003001, 0x0000000000000000000000000000000000003002]
+    ├─ [0] console::log("修改owner前，owner数量 = ", 3) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] console::log("  owner = ", 0x0000000000000000000000000000000000003000) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] console::log("  owner = ", 0x0000000000000000000000000000000000003001) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] console::log("  owner = ", 0x0000000000000000000000000000000000003002) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] VM::prank(0x0000000000000000000000000000000000003000)
+    │   └─ ← [Return]
+    ├─ [5734] MultiSignContract::ownerAddOne(0x0000000000000000000000000000000000003001)
+    │   └─ ← [Return] 3, "owner already in , no op"
+    ├─ [0] console::log("put user1 = ", "owner already in , no op") [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] console::log("增加 user1 ，ownerCount1 = ", 3) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] VM::prank(0x0000000000000000000000000000000000003002)
+    │   └─ ← [Return]
+    ├─ [74910] MultiSignContract::ownerAddOne(0x0000000000000000000000000000000000003005)
+    │   ├─ emit OwnerAdded(user: 0x0000000000000000000000000000000000003005)
+    │   ├─  storage changes:
+    │   │   @ 0x49cc5762642d2d72499618e191bca68189e3a24feec0a3509a3a84fefd1d2f75: 0 → 1
+    │   │   @ 0xbd9cd2148e23d1b2215e713d9f9e026404a6c766a63bf49ec3e1648c7b11587e: 0 → 3
+    │   │   @ 0x405787fa12a823e0f2b7631cc41b3ba8828b3321ca811111fa75cd3aa3bb5ad1: 0 → 12293
+    │   │   @ 2: 3 → 4
+    │   └─ ← [Return] 4, "put owner OK"
+    ├─ [0] console::log("put user5 = ", "put owner OK") [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] console::log("增加 user5 ，ownerCount2 = ", 4) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] VM::prank(0x0000000000000000000000000000000000003005)
+    │   └─ ← [Return]
+    ├─ [16024] MultiSignContract::ownerRemoveOne(0x0000000000000000000000000000000000003002)
+    │   ├─ emit OwnerRemoved(user: 0x0000000000000000000000000000000000003002)
+    │   ├─  storage changes:
+    │   │   @ 0x405787fa12a823e0f2b7631cc41b3ba8828b3321ca811111fa75cd3aa3bb5ad1: 12293 → 0
+    │   │   @ 0xd471068f49dbbcf3c2cced98accf54eddd06079a8cf2210f84239c1f9dc345f7: 1 → 0
+    │   │   @ 0x405787fa12a823e0f2b7631cc41b3ba8828b3321ca811111fa75cd3aa3bb5ad0: 12290 → 12293
+    │   │   @ 0x33cf466894a8b7a806b2aff4c481a44452893345ce2cce0e9d26b493e4affce3: 2 → 0
+    │   │   @ 2: 4 → 3
+    │   │   @ 0xbd9cd2148e23d1b2215e713d9f9e026404a6c766a63bf49ec3e1648c7b11587e: 3 → 2
+    │   └─ ← [Return] 3
+    ├─ [0] console::log("移除 user2 ，ownerCount3 = ", 3) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [2499] MultiSignContract::queryOwnerList()
+    │   └─ ← [Return] [0x0000000000000000000000000000000000003000, 0x0000000000000000000000000000000000003001, 0x0000000000000000000000000000000000003005]
+    ├─ [0] console::log("修改owner后，owner数量 = ", 3) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] console::log("  owner = ", 0x0000000000000000000000000000000000003000) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] console::log("  owner = ", 0x0000000000000000000000000000000000003001) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] console::log("  owner = ", 0x0000000000000000000000000000000000003005) [staticcall]
+    │   └─ ← [Stop]
+    └─ ← [Stop]
+
+Suite result: ok. 3 passed; 0 failed; 0 skipped; finished in 2.51ms (5.66ms CPU time)
+
+Ran 1 test suite in 193.22ms (2.51ms CPU time): 3 tests passed, 0 failed, 0 skipped (3 total tests)
