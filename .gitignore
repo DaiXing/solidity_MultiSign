@@ -3,7 +3,7 @@ cache/
 out/
 
 # 依赖（如果用了 forge install）
-# lib/
+lib/
 node_modules/
 .github/
 
