@@ -8,16 +8,19 @@ import {console} from "forge-std/console.sol";
 
 contract MultiSignTest is Test {
     // 多个用户。
-    address userCreator = address(0x3000);
+    address userCreator = address(0x3000); // 创建者
     address user1 = address(0x3001);
     address user2 = address(0x3002);
     address user3 = address(0x3003);
     address user4 = address(0x3004);
     address user5 = address(0x3005);
-    address userTo = address(0x3099);
+    address userTo = address(0x3099); // 转给谁
 
+    // 钱包。
     MultiSignContract multiSign;
     address multiSignAddr;
+
+    // 某个事务。
     uint txIdA;
 
     function setUp() public {
@@ -25,6 +28,8 @@ contract MultiSignTest is Test {
         ownerList[0] = user1;
         ownerList[1] = user2;
         vm.prank(userCreator);
+
+        // 创建钱包。
         multiSign = new MultiSignContract(ownerList, 2);
         multiSignAddr = address(multiSign);
 
@@ -32,7 +37,7 @@ contract MultiSignTest is Test {
         vm.deal(user1, 1000);
         vm.prank(user1);
         (bool ok, ) = payable(multiSignAddr).call{value: 500}("");
-        require(ok, "init error");
+        require(ok, "init amount error");
 
         // 交易。
         vm.prank(userCreator);
@@ -44,12 +49,18 @@ contract MultiSignTest is Test {
         // address[2] memory ownerList = [user1, user2];// 加了size，传不进去。
 
         vm.startPrank(userCreator);
+        console.log(unicode"有重复的owner，不能创建。");
         // 有重复的user。
         address[] memory ownerListRepeat = new address[](2);
         ownerListRepeat[0] = user1;
-        // ownerListRepeat[1] = userCreator; // [FAIL: >>>  owner repeat]
+
+        ownerListRepeat[1] = userCreator; // [FAIL: >>>  owner repeat]
+        vm.expectRevert();
+        new MultiSignContract(ownerListRepeat, 2);
+
         ownerListRepeat[1] = user1; // [FAIL: >>>  owner repeat]
-        // MultiSignContract contract2 = new MultiSignContract(ownerListRepeat, 2);
+        vm.expectRevert();
+        new MultiSignContract(ownerListRepeat, 2);
         vm.stopPrank();
 
         // 创建。
@@ -85,9 +96,11 @@ contract MultiSignTest is Test {
         console.log("   state = ", uint(state));
         require(creator == userCreator, "creator invalid");
 
-        // 部署owner。不能查询。
-        // vm.prank(user5); // [Revert] user not owner
-        // multiSign.queryTx(txIdC);
+        // 不是交易的owner。不能查询交易。
+        console.log(unicode"测试异常情况： 不是交易的owner。不能查询交易。");
+        vm.prank(user5); // [Revert] user not owner
+        vm.expectRevert();
+        multiSign.queryTx(txIdC);
     }
 
     // 测试owner增加、删除。
@@ -141,9 +154,11 @@ contract MultiSignTest is Test {
         console.log(unicode"user1 确认后。 确认数量=", count3);
         require(count3 == 2, "confirm count3 error");
 
-        // 不是owner。异常。
-        // vm.prank(user5); // [Revert] user not owner
-        // uint count4 = multiSign.confirmOnce(txIdA);
+        // 不是交易的owner，不能确认交易。
+        console.log(unicode"测试异常情况： 不是交易的owner，不能确认交易。");
+        vm.prank(user5); // [Revert] user not owner
+        vm.expectRevert();
+        multiSign.confirmOnce(txIdA);
 
         // 取消1个。数量-1
         vm.prank(userCreator);
@@ -185,8 +200,10 @@ contract MultiSignTest is Test {
         );
         require(balanceTo == 100, "balanceTo error");
 
-        // 重复执行。异常。状态变了。 [Revert] state not match
-        // vm.prank(user1);
-        // (bool ok3, string memory desc3) = multiSign.executeTx(txIdA);
+        // 已经执行过，不能重复执行。  [Revert] state not match
+        console.log(unicode"测试异常情况： 已经执行过，不能重复执行。");
+        vm.prank(user1);
+        vm.expectRevert();
+        multiSign.executeTx(txIdA);
     }
 }
