@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
-// 状态。
+// 交易的状态。
 enum TxState {
     Confirming, // 确认中
     Executed, // 已经执行
-    Canceled, // 取消
-    None // 未使用
+    Canceled // 取消
 }
 
 // struct 可以放外面。
@@ -124,8 +123,12 @@ contract MultiSignContract {
 
     // owner才能操作。
     modifier needOwner() {
-        require(ownerBeMap[msg.sender], "user not owner");
+        needOwner_();
         _;
+    }
+
+    function needOwner_() internal view {
+        require(ownerBeMap[msg.sender], "user not owner");
     }
 
     // 状态
@@ -173,7 +176,8 @@ contract MultiSignContract {
         );
     }
 
-    function queryOwnerList() public returns (address[] memory) {
+    // 查询owner列表。
+    function queryOwnerList() public view returns (address[] memory) {
         return ownerList; // 直接把 storage 复制为 memory
     }
 
@@ -248,7 +252,9 @@ contract MultiSignContract {
         // 已经确认过。
         if (txx.ownerConfirmed[msg.sender]) {
             // 不操作。
-        } else {
+        }
+        // 还未确认。
+        else {
             txx.ownerConfirmed[msg.sender] = true;
             txx.countConfirmed++; // 计数。
             emit TxConfirmOnce(txId, msg.sender); // 事件。
@@ -272,7 +278,9 @@ contract MultiSignContract {
             delete txx.ownerConfirmed[msg.sender];
             txx.countConfirmed--; // 计数。
             emit TxConfirmRevoked(txId, msg.sender); // 事件。
-        } else {
+        }
+        // 还未确认。
+        else {
             // 不操作。
         }
         return (txx.countConfirmed);

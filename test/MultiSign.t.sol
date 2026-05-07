@@ -3,8 +3,8 @@ pragma solidity ^0.8.13;
 
 import {Test} from "forge-std/Test.sol";
 // import {Counter} from "../src/Counter.sol";
-import "../src/MultiSign.sol";
-import "forge-std/console.sol";
+import {TxState, MultiSignContract} from "../src/MultiSign.sol";
+import {console} from "forge-std/console.sol";
 
 contract MultiSignTest is Test {
     // 多个用户。

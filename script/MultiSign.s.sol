@@ -3,7 +3,7 @@ pragma solidity ^0.8.13;
 
 import {Script} from "forge-std/Script.sol";
 // import {Counter} from "../src/Counter.sol";
-import "../src/MultiSign.sol";
+import {MultiSignContract} from "../src/MultiSign.sol";
 
 // 部署。
 contract MultiSignScript is Script {
