@@ -136,6 +136,7 @@ contract MultiSignContract {
         _inState(txId, state);
         _;
     }
+
     // 要求减少代码。
     function _inState(uint txId, TxState state) private view {
         // 引用。
@@ -150,9 +151,9 @@ contract MultiSignContract {
     )
         public
         view
-        needOwner
+        // needOwner // 查询不需要权限。
         returns (
-            uint txId_,
+            uint txId_, // 也能返回 struct
             address creator,
             address to,
             uint goal,

@@ -179,6 +179,7 @@ contract MultiSignTest is Test {
         console.log(unicode"user2 确认后。 确认数量=", count6);
         require(count6 == 2, "confirm count6 error");
 
+        // -----------------------
         // 执行前的余额。
         uint balanceWalletBefore = multiSignAddr.balance;
 
