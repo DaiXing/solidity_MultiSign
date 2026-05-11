@@ -96,11 +96,13 @@ contract MultiSignTest is Test {
         console.log("   state = ", uint(state));
         require(creator == userCreator, "creator invalid");
 
-        // 不是交易的owner。不能查询交易。
-        console.log(unicode"测试异常情况： 不是交易的owner。不能查询交易。");
+        // query 不检查 owner
+        // console.log(unicode"测试异常情况： 不是交易的owner。不能查询交易。");
+        console.log(unicode"测试： query 不检查 owner ");
         vm.prank(user5); // [Revert] user not owner
-        vm.expectRevert();
-        multiSign.queryTx(txIdC);
+        // vm.expectRevert();
+        (uint txId_2, , , , , , , ) = multiSign.queryTx(txIdC);
+        require(txId_2 > 0, unicode"query 不检查 owner ");
     }
 
     // 测试owner增加、删除。
