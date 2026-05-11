@@ -1,0 +1,23 @@
+Compiling 23 files with Solc 0.8.33
+Solc 0.8.33 finished in 693.48ms
+Compiler run successful!
+Analysing contracts...
+Running tests...
+
+Ran 3 tests for test/MultiSign.t.sol:MultiSignTest
+[PASS] test_confirm() (gas: 224744)
+[PASS] test_create() (gas: 792067)
+[PASS] test_owner() (gas: 119362)
+Suite result: ok. 3 passed; 0 failed; 0 skipped; finished in 1.32ms (1.40ms CPU time)
+
+Ran 1 test suite in 191.04ms (1.32ms CPU time): 3 tests passed, 0 failed, 0 skipped (3 total tests)
+
+╭------------------------+-----------------+----------------+----------------+----------------╮
+| File                   | % Lines         | % Statements   | % Branches     | % Funcs        |
++=============================================================================================+
+| script/MultiSign.s.sol | 0.00% (0/6)     | 0.00% (0/5)    | 100.00% (0/0)  | 0.00% (0/2)    |
+|------------------------+-----------------+----------------+----------------+----------------|
+| src/MultiSign.sol      | 93.81% (91/97)  | 95.24% (80/84) | 59.38% (19/32) | 93.33% (14/15) |
+|------------------------+-----------------+----------------+----------------+----------------|
+| Total                  | 88.35% (91/103) | 89.89% (80/89) | 59.38% (19/32) | 82.35% (14/17) |
+╰------------------------+-----------------+----------------+----------------+----------------╯
